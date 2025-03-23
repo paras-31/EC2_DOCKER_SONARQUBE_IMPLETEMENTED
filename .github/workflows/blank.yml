@@ -1,0 +1,64 @@
+name: Work Flow Based On Different Env
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      Environment:
+        description: "Which environment to deploy e.g. dev, uat"
+        required: true
+        type: choice
+        options: 
+          - dev
+          - uat
+
+jobs:
+
+  Terraform_action_build:
+
+    name: Terraform_action_build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout_actions
+        uses: actions/checkout@v4
+
+      - name: set up terraform hashicorp 
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.7
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Corrected variable name
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Runs a single command using the runner's shell
+      - name: Terraform init
+        run: | 
+          cd module
+          terraform init
+        
+      - name: checking env condition where to deploy
+        id: determine_tfvars
+        run: |
+          if [ "${{ github.event.inputs.Environment }}" = "dev" ]; then
+            echo "TFVAR_FILE=dev.tfvars" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" = "uat" ]; then
+            echo "TFVAR_FILE=uat.tfvars" >> $GITHUB_ENV
+          else
+            echo "Error: Unsupported environment"
+            exit 1
+          fi
+
+      - name: plan
+        run: |
+          cd module
+          terraform plan --var-file=${{ env.TFVAR_FILE }}
+
+      - name: apply
+        run: |
+          cd module 
+          terraform destroy --var-file=${{ env.TFVAR_FILE }} -auto-approve
