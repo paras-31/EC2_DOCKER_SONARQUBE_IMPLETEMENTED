@@ -1,4 +1,4 @@
-name: Work Flow Based On Different Env
+name: destroy
 
 # Controls when the workflow will run
 on:
@@ -42,7 +42,7 @@ jobs:
           terraform init -reconfigure
           -backend-config="bucket=parasec2tfstate "
           -backend-config="key=terraform.tfstate"
-          
+
       - name: destroy
         run: |
           cd module 
