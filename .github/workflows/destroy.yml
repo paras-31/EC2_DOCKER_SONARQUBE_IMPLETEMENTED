@@ -39,16 +39,11 @@ jobs:
       - name: Terraform init
         run: | 
           cd module
-          terraform init
+          terraform init -reconfigure
           -backend-config="bucket=parasec2tfstate "
           -backend-config="key=terraform.tfstate"
-
-      - name: plan
-        run: |
-          cd module
-          terraform plan
-
-      - name: apply
+          
+      - name: destroy
         run: |
           cd module 
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
