@@ -29,9 +29,9 @@ locals {
 resource "aws_instance" "example1" {
   # provider = aws.us-east-1
   count = 2
-  ami           = "ami-0e35ddab05955cf57" # Amazon Linux 2 AMI ID
+  ami           = "ami-084568db4383264d4" # Amazon Linux 2 AMI ID
   instance_type = "t2.micro"
-  subnet_id = "subnet-09649994b79a181c2"
+  subnet_id = "subnet-049b99c52240425f3"
  # Use the appropriate subnet
   user_data     = <<-EOF
               #!/bin/bash
