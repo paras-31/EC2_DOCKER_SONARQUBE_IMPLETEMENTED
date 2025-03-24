@@ -40,7 +40,7 @@ jobs:
         run: | 
           cd module
           terraform init
-          # -backend-config="bucket=parasec2tfstate"
+          # -backend-config="bucket=parasec2tfstatefile"
           # -backend-config="key=terraform.tfstate"
 
       - name: plan

@@ -6,7 +6,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "parasec2tfstate"
+    bucket         = "parasec2tfstatefile"
     key            = "terraform.tfstate"
     region         = "us-east-1"
   }
