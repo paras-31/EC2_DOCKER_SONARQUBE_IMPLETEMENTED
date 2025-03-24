@@ -1,12 +1,17 @@
 locals {
-  user_data = <<-EOT
+    user_data = <<-EOT
     #!/bin/bash
-    sudo su
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    . ~/.nvm/nvm.sh
-    nvm install 16
+    sudo yum update -y
+    sudo yum install docker.io -y 
+    sudo usermod -aG docker $USER
+    newgrp docker
+    sudo chmod 777 /var/run/docker.sock
+    git clone https://github.com/N4si/DevSecOps-Project.git
+    cd DevSecOps-Project
+    docker build -t netflix .
+    docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
   EOT
-}
+  }
 
 
 # resource "aws_instance" "example" {
@@ -29,11 +34,12 @@ locals {
 resource "aws_instance" "example1" {
   # provider = aws.us-east-1
   count = 2
-  ami           = "ami-084568db4383264d4" # Amazon Linux 2 AMI ID
+  ami           = "ami-08b5b3a93ed654d19" # Amazon Linux 2 AMI ID
   instance_type = "t2.micro"
   subnet_id = "subnet-049b99c52240425f3"
  # Use the appropriate subnet
-  user_data     = <<-EOF
+  user_data = base64encode(local.user_data)
+  # user_data     = <<-EOF
               #!/bin/bash
               sudo apt-get update -y
               sudo apt-get install docker.io -y 
