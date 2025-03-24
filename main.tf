@@ -1,8 +1,8 @@
 locals {
     user_data = <<-EOT
     #!/bin/bash
-    sudo yum update -y
-    sudo yum install docker.io -y 
+    sudo apt-get update -y
+    sudo apt-get install docker.io -y 
     sudo usermod -aG docker $USER
     newgrp docker
     sudo chmod 777 /var/run/docker.sock
@@ -34,7 +34,7 @@ locals {
 resource "aws_instance" "example1" {
   # provider = aws.us-east-1
   count = 2
-  ami           = "ami-08b5b3a93ed654d19" # Amazon Linux 2 AMI ID
+  ami           = "ami-0f9de6e2d2f067fca" # Amazon Linux 2 AMI ID
   instance_type = "t2.micro"
   subnet_id = "subnet-049b99c52240425f3"
  # Use the appropriate subnet
