@@ -41,16 +41,16 @@ resource "aws_instance" "example1" {
   user_data = base64encode(local.user_data)
   # user_data     = <<-EOF
               #!/bin/bash
-              sudo apt-get update -y
-              sudo apt-get install docker.io -y 
-              sudo usermod -aG docker $USER
-              newgrp docker
-              sudo chmod 777 /var/run/docker.sock
-              git clone https://github.com/N4si/DevSecOps-Project.git
-              cd DevSecOps-Project
-              docker build -t netflix .
-              docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
-              EOF
+              # sudo apt-get update -y
+              # sudo apt-get install docker.io -y 
+              # sudo usermod -aG docker $USER
+              # newgrp docker
+              # sudo chmod 777 /var/run/docker.sock
+              # git clone https://github.com/N4si/DevSecOps-Project.git
+              # cd DevSecOps-Project
+              # docker build -t netflix .
+              # docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+              # EOF
   associate_public_ip_address = true # Associates a public IPv4 address
 
   tags = {
